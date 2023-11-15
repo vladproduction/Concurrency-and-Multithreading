@@ -1,0 +1,4 @@
+0)first producer and consumer always working;
+1)if we have 0<brokerSize<=5 --> all three producers working, and only one(first-1) consumer;
+2)if we have 5<brokerSize<=10 --> two producers working(1;3), and two consumers(1;2);
+3)if we have 10<brokerSize<=15 --> one producer working(first-1), and all three consumers(1;2;3);
