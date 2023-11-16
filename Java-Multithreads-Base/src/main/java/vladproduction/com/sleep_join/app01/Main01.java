@@ -1,4 +1,4 @@
-package vladproduction.com.sleep_join;
+package vladproduction.com.sleep_join.app01;
 
 import java.util.stream.IntStream;
 
