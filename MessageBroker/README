@@ -1,0 +1,28 @@
+Project representing of working thread where:
+ -producer(to create messages);
+ -receiver(to receive messages);
+ -broker(holds the queue with adjustable capacity) is responsible to be not empty and too full;
+ and it possible by synchronized methods: 1)createMessage(Message message); 2)Message receiveMessage();
+
+ console:
+
+ '[#1]' consumed
+  '[#1]' is created
+  '[#2]' consumed
+  '[#2]' is created
+  '[#3]' is created
+  '[#3]' consumed
+  '[#4]' is created
+  '[#4]' consumed
+  '[#5]' is created
+  '[#5]' consumed
+  '[#6]' is created
+  '[#6]' consumed
+  '[#7]' is created
+  '[#7]' consumed
+  '[#8]' is created
+  '[#8]' consumed
+  '[#9]' is created
+  '[#9]' consumed
+  ...
+  ...
