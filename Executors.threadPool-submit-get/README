@@ -1,0 +1,67 @@
+Project show basic operations with Threads in example by ExecutorService;
+
+-initiating factory of threads: ExecutorService executorService = Executors.newFixedThreadPool(5);
+for example we have 5 threads (workers);
+-class with some task is implements Callable<Integer> (task);
+we want to have result of task as Integer;
+-Future<Integer> future = executorService.submit(callable);
+submit our task for executorService; this method is not blocking;
+after we can have result of execution as Future<Integer> future;
+-future.get(); - blocking method, as much it takes time, so much we stay and wait till is done;
+-future.get(1, TimeUnit); - blocking method as before, but with params; if task execute longer, then Exception throws
+-boolean doneWork = future.isDone(); //done or not as a boolean flag
+-by loop while(!future.isDone()){} we can wait till workers finishing and after invoke future.get();
+-future.cancel(true);// stop execute without waiting till work is done;
+-future.cancel(false);// opposite flag as before - no stop
+-boolean isCancelled = future.isCancelled(); //return the flag about if we ever used cancel method;
+-overridden method call() from Callable return our generic Integer, inside we put some logic;
+-executorService.shutdown(); //have to switch off execution programme;
+
+*Main03: -we execute tasks one-by-one:
+
+MyCallable-start!pool-1-thread-1
+MyCallable-finish!pool-1-thread-1
+result = 3
+add new tasks
+MyCallable-start!pool-1-thread-2
+MyCallable-finish!pool-1-thread-2
+result2 = 7
+MyCallable-start!pool-1-thread-3
+MyCallable-finish!pool-1-thread-3
+result3 = 10
+Main-finish
+resTime = 30046
+
+*Main04: -in that case all threads ('5') are busy, and working concurrently;
+
+MyCallable-start!pool-1-thread-2
+MyCallable-start!pool-1-thread-3
+MyCallable-start!pool-1-thread-1
+MyCallable-start!pool-1-thread-5
+MyCallable-start!pool-1-thread-4
+MyCallable-finish!pool-1-thread-3
+MyCallable-finish!pool-1-thread-2
+MyCallable-finish!pool-1-thread-5
+MyCallable-finish!pool-1-thread-1
+MyCallable-finish!pool-1-thread-4
+result = 3
+result2 = 7
+result3 = 10
+result4 = 7
+result5 = 10
+Main-finish
+resTime = 10013
+
+*Main05: -imitating list of same tasks (50), to work with them used threadPool(5);
+-and we have a result: showing as 'sum' of logic from call() in class MyCallable;
+//submit-get
+MyCallable-start!pool-1-thread-3
+MyCallable-finish!pool-1-thread-2
+...
+MyCallable-finish!pool-1-thread-5
+MyCallable-finish!pool-1-thread-3
+sum = 150
+Main-finish
+resTime = 100060 //if we have pool = 5 (more time but all workers always busy)
+
+*resTime = 10029 //if we have pool = 500 (less time and some workers are free from job)
