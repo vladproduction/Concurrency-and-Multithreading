@@ -1,4 +1,4 @@
-package vladproduction.com.create_and_start;
+package vladproduction.com.create_and_start.app04;
 
 public class Main02 {
     public static void main(String[] args) {
