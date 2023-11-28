@@ -12,15 +12,15 @@ public class MyPublisher04 extends Thread{
 
     @Override
     public void run() {
-        int i = 0;
-        while (i <= 4){
-            System.out.println("publisher created " + i);
+        int i = 1;
+        while (i <= 5){
+            System.out.println("publisher created: " + i);
             try {
                 Person04 person04 = new Person04();
                 person04.setName("name" + i);
                 person04.setAge(i);
                 queue.put(person04);
-                System.out.println("after put...");
+                System.out.println("after put...person to queue: " + i);
                 i++;
                 Thread.sleep(100);
             } catch (InterruptedException e) {

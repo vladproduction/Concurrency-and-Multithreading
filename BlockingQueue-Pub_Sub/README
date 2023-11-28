@@ -1,0 +1,15 @@
+*app01:
+-in class Person we have
+    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+    it gives opportunity to have information about changed(if it happen) variable;
+    for use this info we have to have listener(Subscribers should implements PropertyChangeListener);
+    addSubscriber(subscriber) - after that we can see changes;
+
+*app02:
+-BlockingQueue queue = new ArrayBlockingQueue(10);
+
+*app03:
+-BlockingQueue queue = new SynchronousQueue();
+
+*app04:
+-BlockingQueue queue = new PriorityBlockingQueue();

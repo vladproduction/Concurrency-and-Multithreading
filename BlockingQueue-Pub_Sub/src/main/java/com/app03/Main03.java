@@ -19,7 +19,7 @@ public class Main03 {
 //            subscriber.start();
 //        }
         MySubscriber03 subscriber = new MySubscriber03(queue);
-//        subscriber.start();
+        subscriber.start();
 
     }
 }

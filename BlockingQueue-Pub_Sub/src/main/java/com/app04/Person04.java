@@ -9,7 +9,6 @@ public class Person04 implements Comparable{
     private Integer age;
 
 
-
     public String getName() {
         return name;
     }
@@ -24,11 +23,8 @@ public class Person04 implements Comparable{
     }
 
     public void setAge(Integer age) {
-
         this.age = age;
     }
-
-
 
     @Override
     public String toString() {
