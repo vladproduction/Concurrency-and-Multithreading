@@ -1,0 +1,51 @@
+
+-----------------#1:
+-in catch {we set interrupt} but interrupted in main; programme complete with done work!
+=======MAIN-START: main
+
+RUNNABLE - start: Thread-0
+
+Status of RUNNABLE (isInterrupted): false
+	runnable{: Thread-0
+InterruptedException, name: Thread-0, status: false
+--------status now?---------
+InterruptedException, name: Thread-0, status: true
+	runnable: Thread-0}
+App complete
+
+RUNNABLE - finish: Thread-0
+
+=======MAIN-FINISH: main
+
+
+-----------------#2:
+-not interrupted in main; we never get the catch block with Exception where it stands flag isInterrupted, so to decide to stop;
+=======MAIN-START: main
+
+RUNNABLE - start: Thread-0
+
+Status of RUNNABLE (isInterrupted): false
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0 ... have to stop manually
+
+
+-----------------#3:
+-interrupted in main, but in catch block we do not interrupting currentThread; so programme is still leaking as in #2 example;
+=======MAIN-START: main
+
+RUNNABLE - start: Thread-0
+
+Status of RUNNABLE (isInterrupted): false
+	runnable{: Thread-0
+InterruptedException, name: Thread-0, status: false
+--------status now?---------
+InterruptedException, name: Thread-0, status: false
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0
+	runnable{: Thread-0 ... have to stop manually

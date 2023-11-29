@@ -1,0 +1,4 @@
+-->First-In-First-Out-->
+-queue has head;
+-head responsible which element will be stands in head in according of compareTo();
+-not thread-safe
