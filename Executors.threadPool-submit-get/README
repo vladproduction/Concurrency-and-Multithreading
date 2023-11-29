@@ -2,7 +2,7 @@ Project show basic operations with Threads in example by ExecutorService;
 
 -initiating factory of threads: ExecutorService executorService = Executors.newFixedThreadPool(5);
 for example we have 5 threads (workers);
--class with some task is implements Callable<Integer> (task);
+-MyCallable class with some task is implements Callable<Integer> (task);
 we want to have result of task as Integer;
 -Future<Integer> future = executorService.submit(callable);
 submit our task for executorService; this method is not blocking;
