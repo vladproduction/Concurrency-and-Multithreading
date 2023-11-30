@@ -1,4 +1,5 @@
 
+-scenario/worker/proxy
 
 -lection_example:
     -ThreadPoolAndQueue //ConcurrentLinkedQueue
