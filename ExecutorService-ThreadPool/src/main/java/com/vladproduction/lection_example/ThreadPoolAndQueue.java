@@ -7,24 +7,25 @@ public class ThreadPoolAndQueue {
 
     private static final Queue<String> SCENARIO_QUEUE = new ConcurrentLinkedQueue<>();
     private static final Queue<String> PROXY_QUEUE = new ConcurrentLinkedQueue<>();
-    private static final CountDownLatch CDL = new CountDownLatch(8);
+    private static final int AMOUNT_OF_TASKS = 5;
+    private static final CountDownLatch CDL = new CountDownLatch(AMOUNT_OF_TASKS + 2);
 
     public void threadAndQueue() throws InterruptedException {
 
-        //init threadPool
+
         ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-        //description of how threads have to work
-        Runnable scenarios = new Runnable() { //responsible to fill scenarios queue
+
+        Runnable scenarios = new Runnable() {
             @Override
             public void run() {
                 System.out.println("Scenarios submitted by: " + Thread.currentThread().getName());
-                for (int i = 0; i < 10; i++) { //we will have 10 scenarios
-                    String scenario = "\tScenario# " + i;
+                for (int i = 0; i < 10; i++) {
+                    String scenario = "Scenario# " + i;
                     SCENARIO_QUEUE.add(scenario);
                     System.out.println(scenario);
                     try {
-                        TimeUnit.SECONDS.sleep(5); //simulating speed of filling queue
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -38,11 +39,11 @@ public class ThreadPoolAndQueue {
             public void run() {
                 System.out.println("Proxy parsing: " + Thread.currentThread().getName());
                 for (int i = 0; i < 10; i++) {
-                    String proxy = "\tProxy# " + i;
-                    SCENARIO_QUEUE.add(proxy);
+                    String proxy = "Proxy# " + i;
+                    PROXY_QUEUE.add(proxy);
                     System.out.println(proxy);
                     try {
-                        TimeUnit.SECONDS.sleep(2); //little faster then scenarios
+                        TimeUnit.SECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                         throw new RuntimeException(e);
@@ -52,39 +53,43 @@ public class ThreadPoolAndQueue {
             }
         };
 
-        //put our threads into threadPool
         executorService.submit(scenarios);
         executorService.submit(proxyParsing);
 
-        //here we create worker, to execute tasks in our queues
-        int amountOfWorkers = 6;
-        for (int workersCounter = 1; workersCounter <= amountOfWorkers ; workersCounter++) {
+        TimeUnit.SECONDS.sleep(15);
 
-            Runnable worker = new Runnable() {
+        for (int taskCounter = 1; taskCounter <= AMOUNT_OF_TASKS; taskCounter++) {
+
+            String taskName = "created task# " + taskCounter;
+            System.out.println(taskName);
+
+            Runnable task = new Runnable() {
                 @Override
                 public void run() {
+                    System.out.println(taskName + "//-------started-------//" + Thread.currentThread().getName());
                     for (int i = 0; i < 10; i++) {
                         String proxyToUseForWebDriver = PROXY_QUEUE.poll();
-                        if(proxyToUseForWebDriver == null) continue;  //if its empty just continue
-                        //Initialize webDriver
+                        if (proxyToUseForWebDriver == null) continue;
                         String scenarioToExecute = SCENARIO_QUEUE.poll();
-                        System.out.println("worker: " + Thread.currentThread().getName());
-                        System.out.println("; using proxy: " + proxyToUseForWebDriver);
-                        System.out.println("; and scenario is: " + scenarioToExecute);
+                        System.out.println(taskName + "/worker: " + Thread.currentThread().getName() +
+                                "; " + taskName + "/using proxy: " + proxyToUseForWebDriver +
+                                "; " + taskName + "/and scenario is: " + scenarioToExecute);
                         try {
-                            TimeUnit.SECONDS.sleep(4);
+                            TimeUnit.SECONDS.sleep(10);
+                            System.out.println("\t" + taskName + "//worker: " + Thread.currentThread().getName() + " moving to i = " + (i + 1));
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
                     }
                     CDL.countDown();
+                    System.out.println(taskName + "//-------finish-------//");
                 }
             };
-            executorService.submit(worker); //add worker to executor service
+            System.out.println("task is submitted to workers");
+            executorService.submit(task);
         }
         CDL.await(); //waiting till all operations done and only then executor could be shutdown
         executorService.shutdown(); //and execution, stop programme
-
 
     }
 }

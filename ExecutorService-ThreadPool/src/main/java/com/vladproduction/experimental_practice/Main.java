@@ -1,4 +1,4 @@
-package com.vladproduction.multiThreadPool;
+package com.vladproduction.experimental_practice;
 
 public class Main {
     public static void main(String[] args) throws Exception {

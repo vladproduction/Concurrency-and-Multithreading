@@ -1,0 +1,9 @@
+
+
+-lection_example:
+    -ThreadPoolAndQueue //ConcurrentLinkedQueue
+    -Main;
+
+-practice:
+    -ThreadPoolAndQueue2 //LinkedBlockingQueue
+    -Main;

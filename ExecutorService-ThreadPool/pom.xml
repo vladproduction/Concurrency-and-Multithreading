@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vladproduction</groupId>
-    <artifactId>Scenario-Worker-Proxy</artifactId>
+    <artifactId>ExecutorService-ThreadPool</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

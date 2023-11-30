@@ -1,4 +1,4 @@
-package com.vladproduction.multiThreadPool;
+package com.vladproduction.experimental_practice;
 
 import java.util.concurrent.*;
 
