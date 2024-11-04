@@ -1,0 +1,7 @@
+When to Use Daemon Threads:
+Background Tasks: Use daemon threads for tasks that do not require user interaction and should not prevent the program from exiting.
+Examples include background monitoring tasks or performing cleanup processes.
+Resource Management: They're useful for tasks that manage resources during the runtime of an application without holding it open for completion.
+Important Points:
+Daemon threads have a lower priority compared to user threads; they do not prevent the Java Virtual Machine (JVM) from exiting.
+Ensure that daemon threads do not hold up critical resources, as they may terminate unexpectedly when the main thread finishes.
