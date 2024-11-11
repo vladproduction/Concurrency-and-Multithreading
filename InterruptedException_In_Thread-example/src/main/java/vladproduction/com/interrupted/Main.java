@@ -1,4 +1,4 @@
-package com.vladproduction.interrupted;
+package vladproduction.com.interrupted;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

@@ -1,4 +1,4 @@
-package vladproduction.com;
+package vladproduction.com.demo;
 
 public class MyThread extends Thread{
 
