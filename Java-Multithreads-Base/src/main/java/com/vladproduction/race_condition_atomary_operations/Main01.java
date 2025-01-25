@@ -8,7 +8,7 @@ import static java.util.stream.IntStream.*;
 public class Main01 {
 
     public static int counter = 0;
-    public static final int INCREMENT_AMOUNT_FIRST_THREAD = 100_000;
+    public static final int INCREMENT_AMOUNT_FIRST_THREAD = 100_001;
     public static final int INCREMENT_AMOUNT_SECOND_THREAD = 100_001;
 
 
