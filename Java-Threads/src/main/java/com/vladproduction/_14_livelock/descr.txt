@@ -1,0 +1,12 @@
+Explanation:
+
+Persons: Two instances of Person represent individuals that are trying to pass each other.
+Livelock Behavior: When one person attempts to pass, they check for the other person. If the other person is in the way, both will step back in response to each other.
+Continuous Response: Because they keep stepping back in response to the other, neither person makes progress towards passing, creating a livelock.
+Thread Sleeping: Both threads introduce a brief sleep to allow for mutual checking, reinforcing the livelock behavior rather than allowing them to proceed.
+
+Key Takeaway:
+In this example of livelock, both threads are active and constantly changing their state (stepping back)
+but are unable to make any forward progress. Livelocks can be problematic as they often lead to excessive resource
+consumption and overall application slowdown. Solutions often involve introducing conditions or timeouts to ensure that
+threads can eventually complete their tasks instead of indefinitely responding to one another.
