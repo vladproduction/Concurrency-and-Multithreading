@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conditional Variables</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      color: #333;
+    }
+    code {
+      background-color: #f4f4f4;
+      padding: 5px;
+      border-radius: 5px;
+    }
+    pre {
+      background-color: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Conditional Variables</h1>
+
+<div class="section">
+  <h2>What Are Condition Variables?</h2>
+  <p>Condition variables are a synchronization mechanism that allows threads to wait until a certain condition is met. They are often used in conjunction with a lock (like ReentrantLock). Condition variables can be used to implement complex thread interactions and can improve the efficiency of multithreaded programs compared to using polling.</p>
+</div>
+
+<div class="section">
+  <h2>Using Condition Variables in Java</h2>
+  <p>Java provides the Condition interface, which works with ReentrantLock to allow threads to wait or signal when certain conditions are met.</p>
+</div>
+
+<div class="section">
+  <h2>Java Code Example: Using Condition Variables</h2>
+  <pre><code>
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+class SharedResource {
+    private int data;
+    private boolean available = false; // Condition to signal availability
+    private ReentrantLock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
+
+    // Producer method
+    public void produce(int value) {
+        lock.lock();
+        try {
+            while (available) {
+                // Wait until the data is consumed
+                condition.await();
+            }
+            // Produce data
+            data = value;
+            System.out.println("Produced: " + data);
+            available = true;
+            // Signal that data is available
+            condition.signal();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // Consumer method
+    public void consume() {
+        lock.lock();
+        try {
+            while (!available) {
+                // Wait until there is data to consume
+                condition.await();
+            }
+            // Consume data
+            System.out.println("Consumed: " + data);
+            available = false;
+            // Signal that data has been consumed
+            condition.signal();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
+class Producer extends Thread {
+    private SharedResource resource;
+
+    Producer(SharedResource resource) {
+        this.resource = resource;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            resource.produce(i);
+        }
+    }
+}
+
+class Consumer extends Thread {
+    private SharedResource resource;
+
+    Consumer(SharedResource resource) {
+        this.resource = resource;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            resource.consume();
+        }
+    }
+}
+
+public class ConditionVariableDemo {
+    public static void main(String[] args) {
+        SharedResource resource = new SharedResource();
+
+        // Create producer and consumer threads
+        Producer producer = new Producer(resource);
+        Consumer consumer = new Consumer(resource);
+
+        // Start the threads
+        producer.start();
+        consumer.start();
+
+        try {
+            // Wait for both threads to finish
+            producer.join();
+            consumer.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted.");
+        }
+    }
+}
+        </code></pre>
+</div>
+
+<div class="section">
+  <h2>Explanation of the Code:</h2>
+  <ul>
+    <li><strong>SharedResource Class:</strong> This class contains a shared data item (data) and a boolean (available) to signal if the data is ready to be consumed. It uses a ReentrantLock and a Condition variable for synchronization. The produce() method produces data and uses condition.await()
+    <li><strong>SharedResource Class:</strong> This class contains a shared data item (data) and a boolean (available) to signal if the data is ready to be consumed. It uses a ReentrantLock and a Condition variable for synchronization. The produce() method produces data and uses condition.await() to wait if the data is already available. Once data is produced, it calls condition.signal() to notify consuming threads.</li>
+    <li><strong>Producer Class:</strong> This class extends Thread and is responsible for producing data items in a loop, calling the produce() method of the SharedResource class.</li>
+    <li><strong>Consumer Class:</strong> Similarly, this class extends Thread and consumes data items in a loop by calling the consume() method of the SharedResource class.</li>
+    <li><strong>ConditionVariableDemo Class:</strong> In the main method, instances of Producer and Consumer are created and started. The main thread waits for both to finish using the join() method.</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>Key Takeaway</h2>
+  <p>Condition variables provide a powerful mechanism to efficiently manage interactions between threads, allowing for better control over flow and state in multithreaded applications. By using condition variables, you can avoid busy-waiting and optimize resource management, leading to improved performance in concurrent programming.</p>
+</div>
+
+</body>
+</html>

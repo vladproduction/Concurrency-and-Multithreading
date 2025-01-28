@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Designing Parallel Algorithms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Designing Parallel Algorithms</h1>
+
+<div class="section">
+    <h2>Steps in Designing an Efficient Parallel Algorithm</h2>
+    <p>Designing parallel algorithms involves breaking down a problem into smaller, independent tasks that can be executed concurrently. Here are the essential steps in designing parallel algorithms:</p>
+    <ul>
+        <li><strong>Identify Parallelism:</strong> Analyze the problem to identify parts that can be executed in parallel. Look for independent tasks that do not rely on shared state.</li>
+        <li><strong>Decompose the Problem:</strong> Break down the problem into smaller subproblems that can be solved independently, making sure each subproblem can be processed concurrently.</li>
+        <li><strong>Choose the Right Data Structure:</strong> Select appropriate data structures that allow for safe concurrent access if the tasks need to share data.</li>
+        <li><strong>Implement the Algorithm:</strong> Use threading constructs like ForkJoinPool, ExecutorService, or other concurrency mechanisms to implement the algorithm.</li>
+        <li><strong>Measure Performance:</strong> Assess the performance of the parallel implementation against a sequential version to ensure the parallelization is beneficial.</li>
+        <li><strong>Optimize:</strong> Analyze bottlenecks and optimize synchronization, load balancing, and resource utilization.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Java Code Example: Parallel Merge Sort</h2>
+    <pre><code>
+import java.util.concurrent.RecursiveAction;
+import java.util.concurrent.ForkJoinPool;
+
+class ParallelMergeSort extends RecursiveAction {
+    private final int[] array;
+    private final int left;
+    private final int right;
+
+    ParallelMergeSort(int[] array, int left, int right) {
+        this.array = array;
+        this.left = left;
+        this.right = right;
+    }
+
+    @Override
+    protected void compute() {
+        if (right - left < 2) {
+            return; // Base case: Array is already sorted or has one element
+        }
+
+        int mid = (left + right) / 2;
+
+        // Fork the left and right sorting tasks
+        ParallelMergeSort leftTask = new ParallelMergeSort(array, left, mid);
+        ParallelMergeSort rightTask = new ParallelMergeSort(array, mid, right);
+
+        invokeAll(leftTask, rightTask); // Execute both tasks in parallel
+
+        // Merge the sorted halves
+        merge(array, left, mid, right);
+    }
+
+    private void merge(int[] array, int left, int mid, int right) {
+        int[] temp = new int[right - left];
+        int i = left, j = mid, k = 0;
+
+        while (i < mid && j < right) {
+            temp[k++] = (array[i] <= array[j]) ? array[i++] : array[j++];
+        }
+
+        while (i < mid) {
+            temp[k++] = array[i++];
+        }
+
+        while (j < right) {
+            temp[k++] = array[j++];
+        }
+
+        // Copy the sorted subarray back into the original array
+        System.arraycopy(temp, 0, array, left, temp.length);
+    }
+}
+
+public class ParallelMergeSortDemo {
+    public static void main(String[] args) {
+        int[] array = {37, 25, 43, 5, 69, 9, 14, 80}; // Unsorted array
+        ForkJoinPool pool = new ForkJoinPool(); // Create ForkJoinPool
+
+        // Start the parallel merge sort
+        ParallelMergeSort task = new ParallelMergeSort(array, 0, array.length);
+        pool.invoke(task); // Invoke the task
+
+        // Display the sorted array
+        System.out.println("Sorted array: ");
+        for (int num : array) {
+            System.out.print(num + " ");
+        }
+    }
+}
+        </code></pre>
+</div>
+
+<div class="section">
+    <h2>Explanation of the Code:</h2>
+    <ul>
+        <li><strong>ParallelMergeSort Class:</strong> This class extends <code>RecursiveAction</code>, enabling it to perform a computation without returning a result. It holds the array and the indices defining the subarray to be sorted (left to right). In the <code>compute()</code> method, if the subarray has fewer than two elements, it returns (base case). Otherwise, it divides the array into two halves and forks two tasks: one for each half.</li>
+        <li><strong>Merge Method:</strong> This method merges two sorted halves of the array. It creates a temporary array to hold elements in sorted order, then copies back the sorted elements into the original array.</li>
+        <li><strong>ParallelMergeSortDemo Class:</strong> In the main method, an unsorted array is created, and a <code>ForkJoinPool</code> is initialized. The <code>ParallelMergeSort</code> task is created and invoked using the <code>ForkJoinPool</code>. Finally, the sorted array is printed to the console.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Key Takeaway</h2>
+    <p>Designing parallel algorithms requires careful consideration of how to decompose problems and manage tasks to utilize concurrency effectively. The use of ForkJoinPool with recursive tasks allows for efficient parallel processing of tasks such as sorting.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForkJoinPool and Divide-and-Conquer Algorithms</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>ForkJoinPool and Divide-and-Conquer Algorithms</h1>
+
+<div class="section">
+    <h2>Introduction to ForkJoinPool</h2>
+    <p>ForkJoinPool is a specialized implementation of the ExecutorService designed to work with the Fork/Join
+        framework. It is primarily used for tasks that can be broken down into smaller subtasks recursively and executed
+        in parallel. This is ideal for divide-and-conquer algorithms, where the problem can be solved by dividing it
+        into smaller, independent problems.</p>
+</div>
+
+<div class="section">
+    <h2>Implementing Divide-and-Conquer Algorithms with ForkJoinPool</h2>
+    <p>The ForkJoinTask class simplifies the implementation of divide-and-conquer algorithms, allowing tasks to fork
+        (split) and join (combine results) efficiently.</p>
+</div>
+
+<div class="section">
+    <h2>Java Code Example: Calculating Factorials Using ForkJoinPool</h2>
+    <pre><code>
+import java.util.concurrent.RecursiveTask;
+import java.util.concurrent.ForkJoinPool;
+
+class FactorialTask extends RecursiveTask< Long > {
+    private final long number;
+
+    FactorialTask(long number) {
+        this.number = number;
+    }
+
+    @Override
+    protected Long compute() {
+        if (number <= 1) {
+            return 1L; // Base case
+        }
+
+        // Split the task into two subtasks
+        FactorialTask subTask1 = new FactorialTask(number - 1);
+        subTask1.fork(); // Fork the subtask
+
+        // Compute the result of the current task
+        long result = number * subTask1.join(); // Join the result of subtasks
+
+        return result;
+    }
+}
+
+public class ForkJoinPoolDemo {
+    public static void main(String[] args) {
+        long number = 10; // Change this to compute factorial of a different number
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+
+        // Create a factorial task
+        FactorialTask task = new FactorialTask(number);
+
+        // Invoke the task and get the result
+        long result = forkJoinPool.invoke(task);
+
+        // Display the result
+        System.out.println("Factorial of " + number + " is: " + result);
+    }
+}
+        </code></pre>
+</div>
+
+<div class="section">
+    <h2>Explanation of the Code:</h2>
+    <ul>
+        <li><strong>FactorialTask Class:</strong> This class extends <code>RecursiveTask&lt;Long&gt;</code>, which
+            allows it to return a long value. The constructor takes the number to compute the factorial of. In the
+            <code>compute()</code> method, it checks the base case (factorial of 0 or 1) and returns 1. For numbers
+            greater than 1, it creates a subtask to compute the factorial of <code>number - 1</code>, forks it to run in
+            parallel, and then multiplies the current number with the result of the subtask.
+        </li>
+        <li><strong>ForkJoinPoolDemo Class:</strong> In the main method, a <code>ForkJoinPool</code> instance is created
+            to manage the execution of tasks. A <code>FactorialTask</code> is instantiated with the desired number, and
+            the task is invoked using <code>forkJoinPool.invoke()</code>. The result is printed to the console.
+        </li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Key Takeaway</h2>
+    <p>The ForkJoinPool and its associated tasks provide an efficient way to implement divide-and-conquer algorithms,
+        enabling multiple threads to work on independent subtasks concurrently. This can lead to performance
+        improvements when handling large computations. The ForkJoin framework is particularly beneficial in maximizing
+        CPU utilization for recursive algorithms and tasks that can be easily split into smaller segments.</p>
+</div>
+
+</body>
+</html>
