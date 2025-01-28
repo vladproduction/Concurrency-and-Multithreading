@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reentrant Locks</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Reentrant Locks</h1>
+
+<div class="section">
+    <h2>Introduction to ReentrantLock</h2>
+    <p>In Java, ReentrantLock is a more flexible and powerful alternative to the built-in synchronized keyword. It allows for more sophisticated thread synchronization and provides additional features like fairness policies and the ability to interrupt lock waiting threads.</p>
+</div>
+
+<div class="section">
+    <h2>Comparing ReentrantLock with Synchronized Blocks</h2>
+    <p><strong>Monitors:</strong> Synchronized blocks use intrinsic locks (monitors) associated with an object. Only one thread can own a lock for an object at a time.</p>
+    <p><strong>Flexibility:</strong> ReentrantLock provides more control over the locking mechanism, such as the ability to try locking with a timeout and the option for fairness.</p>
+</div>
+
+<div class="section">
+    <h2>Java Code Example: Using ReentrantLock</h2>
+    <pre><code>
+import java.util.concurrent.locks.ReentrantLock;
+
+class LockCounter {
+    private int count = 0;
+    private ReentrantLock lock = new ReentrantLock();
+
+    // Using ReentrantLock to increment the count
+    public void increment() {
+        lock.lock(); // Acquire the lock
+        try {
+            count++;
+        } finally {
+            lock.unlock(); // Ensure the lock is released
+        }
+    }
+
+    public int getCount() {
+        return count;
+    }
+}
+
+class LockIncrementThread extends Thread {
+    private LockCounter lockCounter;
+
+    LockIncrementThread(LockCounter lockCounter) {
+        this.lockCounter = lockCounter;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 1000; i++) {
+            lockCounter.increment();
+        }
+    }
+}
+
+public class ReentrantLockDemo {
+    public static void main(String[] args) {
+        LockCounter lockCounter = new LockCounter();
+
+        // Create multiple LockIncrementThreads
+        Thread thread1 = new LockIncrementThread(lockCounter);
+        Thread thread2 = new LockIncrementThread(lockCounter);
+        Thread thread3 = new LockIncrementThread(lockCounter);
+
+        // Start the threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        try {
+            // Wait for all threads to finish
+            thread1.join();
+            thread2.join();
+            thread3.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted.");
+        }
+
+        // Display the final count
+        System.out.println("Final counter value: " + lockCounter.getCount());
+    }
+}
+        </code></pre>
+</div>
+
+<div class="section">
+    <h2>Explanation of the Code:</h2>
+    <ul>
+        <li><strong>LockCounter Class:</strong> Contains a private integer variable count and a ReentrantLock instance named lock. The increment() method acquires the lock using lock.lock(), increments the count, and ensures the lock is released in the finally block to avoid deadlock.</li>
+        <li><strong>LockIncrementThread Class:</strong> This class extends Thread and increments LockCounter 1000 times in the run() method.</li>
+        <li><strong>ReentrantLockDemo Class:</strong> Similar to the previous example, it creates a LockCounter instance and multiple LockIncrementThread instances, starts them, and waits for their completion. Finally, it prints the accumulated count.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Key Takeaway</h2>
+    <p>ReentrantLock provides greater flexibility and control over locking and thread synchronization compared to synchronized methods or blocks. It addresses many concurrency issues while improving code readability and maintainability. With features like the ability to try locking without blocking, control over fairness policies, and interruption capabilities, ReentrantLock is a powerful tool for developers working with multi-threaded applications.</p>
+</div>
+
+</body>
+</html>
