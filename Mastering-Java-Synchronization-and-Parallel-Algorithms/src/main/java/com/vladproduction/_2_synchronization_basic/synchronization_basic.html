@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synchronization Basics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Synchronization Basics</h1>
+
+<div class="section">
+    <h2>Overview of Synchronization</h2>
+    <p>Synchronization is essential in concurrent programming because it ensures that multiple threads can access shared resources (such as variables or data structures) safely without causing data inconsistency or corruption. It helps to prevent issues such as race conditions, where the outcome depends on the unpredictable timing of events (like thread execution order).</p>
+</div>
+
+<div class="section">
+    <h2>Critical Sections and Race Conditions</h2>
+    <p><strong>Critical Section:</strong> A portion of code that accesses shared resources and must not be executed by more than one thread at a time. Proper synchronization ensures that critical sections are accessed safely.</p>
+    <p><strong>Race Condition:</strong> A situation that occurs when two or more threads can access shared data and try to change it at the same time. If not handled correctly, this can lead to corrupted data.</p>
+</div>
+
+<div class="section">
+    <h2>Java Code Example: Synchronization Using Synchronized Blocks</h2>
+    <pre><code>
+class Counter {
+    private int count = 0;
+
+    // Synchronized method to safely increment the count
+    public synchronized void increment() {
+        count++;
+    }
+
+    public int getCount() {
+        return count;
+    }
+}
+
+class IncrementThread extends Thread {
+    private Counter counter;
+
+    IncrementThread(Counter counter) {
+        this.counter = counter;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 1000; i++) {
+            counter.increment();
+        }
+    }
+}
+
+public class SyncDemo {
+    public static void main(String[] args) {
+        Counter counter = new Counter();
+
+        // Create multiple IncrementThreads
+        Thread thread1 = new IncrementThread(counter);
+        Thread thread2 = new IncrementThread(counter);
+        Thread thread3 = new IncrementThread(counter);
+
+        // Start the threads
+        thread1.start();
+        thread2.start();
+        thread3.start();
+
+        try {
+            // Wait for all threads to finish
+            thread1.join();
+            thread2.join();
+            thread3.join();
+        } catch (InterruptedException e) {
+            System.out.println("Main thread interrupted.");
+        }
+
+        // Display the final count
+        System.out.println("Final counter value: " + counter.getCount());
+    }
+}
+        </code></pre>
+</div>
+
+<div class="section">
+    <h2>Explanation of the Code:</h2>
+    <ul>
+        <li><strong>Counter Class:</strong> This class contains a private integer variable count and a synchronized method increment() that safely increments the count. The synchronized keyword ensures that only one thread can execute this method at a time.</li>
+        <li><strong>IncrementThread Class:</strong> This class extends Thread and has a constructor that accepts a Counter object. In the run() method, it increments the counter 1000 times.</li>
+        <li><strong>SyncDemo Class:</strong> In this main class, a Counter instance is created. Three IncrementThread instances are created, each of which will increment the counter. The threads are started, and the main thread waits for their completion using the join() method. Finally, it prints the final counter value.</li>
+    </ul>
+</div>
+
+<div class="section">
+    <h2>Key Takeaway</h2>
+    <p>Using synchronization effectively allows multiple threads to work with shared resources without compromising the integrity of the data, thus avoiding race conditions.</p>
+</div>
+
+</body>
+</html>
