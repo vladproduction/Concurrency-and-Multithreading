@@ -1,0 +1,19 @@
+Fork/Join Framework
+The examples demonstrate how the Fork/Join framework divides work into smaller tasks that can be processed in parallel.
+The work-stealing algorithm allows idle threads to "steal" tasks from busy threads, improving efficiency.
+You can see this in action with the Fibonacci and array sum examples.
+
+Lock Framework
+These examples show the advanced locking mechanisms in Java beyond the basic synchronized keyword.
+ReentrantLock provides more control over locking behavior, ReadWriteLock allows multiple readers but exclusive writers,
+StampedLock offers optimistic reading, and Condition objects provide more flexible thread communication than wait/notify.
+
+Java Memory Model
+The examples illustrate how Java ensures memory visibility across threads, which is crucial for correct concurrent programs.
+The volatile keyword guarantees visibility but not atomicity, while synchronized provides both. Memory barriers establish
+happens-before relationships that ensure proper ordering of operations.
+
+Parallel Streams
+The examples demonstrate how to process collections in parallel, comparing performance between sequential and parallel execution.
+The pitfalls section highlights common mistakes and best practices when using parallel streams, including avoiding non-associative
+operations, stateful behavior, and collections with poor splitting performance.

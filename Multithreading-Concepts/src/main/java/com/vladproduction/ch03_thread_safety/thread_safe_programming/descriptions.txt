@@ -1,0 +1,35 @@
+
+  --- Immutability principles ---
+- Mark class as final to prevent inheritance
+- Make all fields final and private
+- No setter methods
+- Ensure defensive copying for mutable fields like collections
+- Provide only getter methods that don't expose internal state
+
+
+  --- ThreadLocal usage ---
+- Using `withInitial()` for default values
+- Proper cleanup in finally blocks
+- Encapsulation of ThreadLocal variables
+- Context management pattern
+
+
+  --- Safe Publication Techniques ---
+- Safe publication ensures that a properly constructed object is visible to all threads without synchronization issues
+- Store object in volatile field
+- Store object in final field
+- Store object in synchronized block/method
+- Store object in ConcurrentHashMap or other concurrent collections
+- Use AtomicReference
+- Use static initializers
+
+
+  --- Defensive Copying ---
+- Defensive copying protects your class from external modifications by creating copies of mutable objects
+- when to use defensive copying:
+ * In constructors when accepting mutable parameters
+ * In getters when returning references to mutable fields
+ * When storing objects in collections
+ * When sharing data between threads
+
+
