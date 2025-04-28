@@ -1,0 +1,25 @@
+    === Best Practices for Thread Interruption in Java: ===
+
+    * Check for interruption regularly:
+In loop conditions: while (!Thread.currentThread().isInterrupted())
+Before starting potentially long operations
+After completing operations that can't be interrupted
+
+    * Handle InterruptedException properly:
+Don't swallow interruptions (catching and doing nothing)
+Restore the interrupt flag with Thread.currentThread().interrupt()
+Propagate the exception or respond to it appropriately
+
+    * Clean up resources:
+Use finally blocks to ensure resources are released
+Close connections, files, and other resources even when interrupted
+
+    * Use cooperative cancellation:
+Prefer volatile boolean flags for signaling shutdown
+Use interruption as a stronger signal when needed
+Never use Thread.stop() or other deprecated methods
+
+    * For higher-level applications:
+Use ExecutorService and related classes for better thread management
+Leverage Future.cancel() for task cancellation
+Use shutdown() and shutdownNow() for graceful termination

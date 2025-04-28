@@ -1,0 +1,18 @@
+Key Features of ArrayBlockingQueue
+In both examples, the ArrayBlockingQueue provides these important characteristics:
+
+Thread-safety: All operations are atomic and thread-safe
+Blocking operations:
+
+put() blocks when the queue is full
+take() blocks when the queue is empty
+
+
+Bounded capacity: Fixed size defined at creation time
+FIFO ordering: First-in-first-out ordering of elements
+
+In the first example, we see a basic producer-consumer pattern with a single thread of each type.
+
+The second example extends this to multiple producers and consumers, each with their own thread,
+demonstrating how ArrayBlockingQueue efficiently handles concurrent access from multiple sources
+without requiring additional synchronization.

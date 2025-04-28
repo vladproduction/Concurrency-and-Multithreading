@@ -1,0 +1,15 @@
+Common Pitfalls and How to Avoid Them
+
+Thread leaks: Not properly shutting down pools.
+Thread starvation: When long-running tasks prevent others from executing.
+Resource exhaustion: Creating too many threads.
+Deadlocks: When tasks depend on each other.
+
+Example of preventing deadlocks with timeouts:
+javaFuture<String> future = executor.submit(callableTask);
+try {
+    String result = future.get(5, TimeUnit.SECONDS);
+} catch (TimeoutException e) {
+    future.cancel(true); // Attempt to interrupt the task
+    // Handle timeout situation
+}

@@ -1,0 +1,28 @@
+    *** Key Features ***
+Used Thread.sleep() calls to avoid CPU waste
+Used CountDownLatch for coordinating race start and finish
+Added proper synchronization for shared data
+Real-time progress tracking with visual progress bars
+Race statistics and leaderboard
+Different racer types with unique attributes (Sprinter, Endurance, Technical, Balanced)
+Environmental factors (track condition, weather) that affect performance
+Random race events (stumbles, bursts of speed)
+Detailed metrics and timing
+
+    *** Code Structure ***
+Builder pattern for race configuration
+Immutable classes for better thread safety
+Enums for typed constants
+Better formatted toString() methods with proper alignment
+Comprehensive commenting
+
+    *** Formatted Output ***
+Formatted time display with proper decimal points
+Aligned tabular output with printf formatting
+Visual progress bars for each racer
+
+    *** Advanced Threading Concepts ***
+Thread-safe counters with AtomicInteger
+Synchronized collections
+Proper thread interruption handling
+Resource management

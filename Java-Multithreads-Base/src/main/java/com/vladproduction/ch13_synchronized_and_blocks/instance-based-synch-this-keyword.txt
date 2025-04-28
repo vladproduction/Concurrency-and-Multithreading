@@ -1,0 +1,24 @@
+Key Points About Instance-Based Synchronization
+
+    *** Instance Lock vs. Class Lock:
+With static methods, the lock is the Class object (ClassName.class)
+With instance methods, the lock is the instance itself (this)
+
+    *** Granularity of Synchronization:
+Each instance has its own independent lock
+Threads operating on different instances don't block each other
+Threads operating on the same instance will synchronize
+
+    *** Ways to Synchronize at Instance Level:
+synchronized keyword on the method (uses this as lock)
+synchronized(this) block within a method (equivalent)
+synchronized(customLockObject) for finer control
+
+    *** Use Cases:
+When you want thread safety per instance
+When multiple objects can operate independently
+When you don't want a global bottleneck across all instances
+
+
+The example shows three equivalent ways to synchronize at the instance level,
+demonstrating that instance-based synchronization allows different objects to operate concurrently while maintaining thread safety within each object.

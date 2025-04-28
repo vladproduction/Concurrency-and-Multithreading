@@ -1,0 +1,9 @@
+    (static synchronized methods):
+Uses the Class object as the lock for both methods
+Only one thread can execute either method at any time
+Ensures thread safety but limits parallelism
+
+    (synchronized blocks with separate locks):
+Uses distinct lock objects for different resources
+Allows concurrent execution of different methods
+Maintains thread safety while improving performance
