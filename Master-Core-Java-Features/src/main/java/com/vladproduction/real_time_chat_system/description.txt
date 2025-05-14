@@ -1,0 +1,35 @@
+Here's how to set it up:
+
+Step 1: Compile Java files
+navigate to the directory containing your source files:
+javac -d . com\vladproduction\ChatServer.java com\vladproduction\ClientHandler.java com\vladproduction\ChatClient.java
+
+Step 2: Start the server,
+Open a separate Command Prompt window and start the server:
+java com.vladproduction.ChatServer
+should see: "Chat Server started..."
+
+Step 3: Start client 1,
+Open another Command Prompt window and start the first client:
+java com.vladproduction.ChatClient
+should see: "Connected to chat server."
+
+Step 4: Start client 2,
+Open a third Command Prompt window and start the second client:
+java com.vladproduction.ChatClient
+should also see: "Connected to chat server."
+
+Step 5: Chat between clients:
+type messages in either client window, and they should be received by the other client.
+When typing a message in one client terminal and press Enter, it should appear in the other client terminal prefixed with "Received: "
+
+Tips for testing:
+* all commands from the same root directory where compiled your classes
+* the server must be started before any clients attempt to connect
+* each component needs its own separate terminal window
+* if you close the server, all clients will eventually disconnect
+
+Common issues:
+* the server should run first
+* if clients can't see each other's messages, check the server console for errors
+* if restart the server - need to restart all clients as well

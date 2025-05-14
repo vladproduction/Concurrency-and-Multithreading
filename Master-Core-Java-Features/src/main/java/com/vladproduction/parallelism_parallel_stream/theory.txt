@@ -1,0 +1,40 @@
+Parallel Streams --> convenient way to parallelize operations on collections without directly managing threads.
+
+1)What is the difference between parallelStream() and stream().parallel()?
+Both create parallel streams, but parallelStream() is a convenience method on Collection interfaces,
+while parallel() can be called on any stream to convert it to parallel.
+
+2)How does a parallel stream work internally?
+It uses the Fork/Join framework under the hood.
+The collection is split into segments, processed on different threads, and then the results are combined.
+
+
+3)When should you avoid using parallel streams?
+For small datasets, when operations have side effects, when using stateful lambdas,
+or when operations depend on ordering.
+
+4)How can parallel streams affect order of execution?
+Parallel streams don't guarantee the order of execution. Operations like forEach might execute in any order,
+while operations like forEachOrdered maintain encounter order but may be less efficient.
+
+5)What is the default thread pool size for parallel streams?
+By default, it uses the ForkJoinPool.commonPool() which typically has a size equal
+to the number of available processors.
+
+***Important Considerations***
+
+Thread Safety: Be careful with shared mutable state and side effects in parallel operations.
+Performance: Parallelism has overhead. For small collections, sequential processing might be faster.
+Stateless Operations: Try to use stateless, non-interfering operations with parallel streams.
+Data Structures: ArrayList, arrays, and IntStream.range perform better with parallel streams than LinkedList.
+NQ Model: Consider "N × Q > 10,000" rule of thumb (N = dataset size, Q = work per element) to decide if parallelism is worth it.
+
+***Parallelism and Parallel Streams in Java***
+
+Parallelism in Java refers to breaking down tasks into smaller subtasks that can be processed simultaneously on multiple CPU cores.
+Java provides several frameworks and APIs for parallel programming:
+ - Thread API - Traditional threading model
+ - Executor Framework - Thread pool management
+ - Fork/Join Framework - Divide-and-conquer parallelism
+ - Stream API - Declarative parallel operations for collections
+
