@@ -23,18 +23,20 @@ public class ThreadingExample {
         //Both threads share the same process context, making communication between them (if needed) easier.
 
     }
-}
 
-class Task implements Runnable {
-    @Override
-    public void run() {
-        for (int i = 1; i <= 5; i++) {
-            System.out.println(Thread.currentThread().getName() + " - Count: " + i);
-            try {
-                Thread.sleep(500); // Simulating work
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    static class Task implements Runnable {
+        @Override
+        public void run() {
+            for (int i = 1; i <= 5; i++) {
+                System.out.println(Thread.currentThread().getName() + " - Count: " + i);
+                try {
+                    Thread.sleep(500); // Simulating work
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 }
+
+
