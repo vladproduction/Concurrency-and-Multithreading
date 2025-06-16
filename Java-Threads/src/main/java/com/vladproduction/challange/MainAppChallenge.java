@@ -36,9 +36,9 @@ public class MainAppChallenge {
         countingD3.start();
 
         try{
-            Thread.sleep(15000);
+            Thread.sleep(5000);
         }catch (InterruptedException e){
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
         votingRunnableD1.doStop = true;
         votingRunnableD2.doStop = true;
@@ -48,6 +48,7 @@ public class MainAppChallenge {
         countingRunnableD2.doStop = true;
         countingRunnableD3.doStop = true;
 
+        System.out.println("\n============================");
         System.out.println("Voting has stopped for design " + d1.getName());
         System.out.println("Total votes for " + d1.getName() + " : " + d1.getVotes().size());
 
@@ -65,7 +66,7 @@ public class MainAppChallenge {
         for (Map.Entry<String, Integer> entry : all.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-        System.out.println("============================");
+
 
         // Find and print the winner
         String winner = null;
@@ -77,7 +78,7 @@ public class MainAppChallenge {
                 winner = entry.getKey();
             }
         }
-        System.out.println("============================");
+
         System.out.println("===========WINNER===========");
         if (winner != null) {
             System.out.println(winner + " with " + maxVotes + " votes.");

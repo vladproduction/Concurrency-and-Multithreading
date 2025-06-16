@@ -2,7 +2,7 @@ package com.vladproduction.challange;
 
 public class CountingRunnable implements Runnable {
 
-    private Design design;
+    private final Design design;
     protected boolean doStop = false;
 
     public CountingRunnable(Design design) {
@@ -16,8 +16,9 @@ public class CountingRunnable implements Runnable {
             try {
                 Thread.sleep(2000);
             }catch (InterruptedException e){
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
+
 }

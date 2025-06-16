@@ -1,18 +1,25 @@
 1)How is the Thread class different from the Runnable interface?
+----------------------------------------------------------------
 An instance of the Thread class or its sub class represents a separate path of execution.
 The Runnable interface represents the running behaviour of a thread. The Thread super class implements the Runnable interface,
 allowing it to implement the run() method, so that it provides the runnable behaviour to its instances.
 
+
 2)What method should be overridden by every thread to indicate what it should do?
+----------------------------------------------------------------------------------
 Every thread needs to implement the `run()` method. The `run()` method should be overridden to implement the running behavior of the thread.
 In other words, what the thread should do.
 
+
 3)What's the correct way to cause a thread to execute/run?
+----------------------------------------------------------
 The Thread class has a method named start() that takes no arguments. When you call this method on a thread object,
 it causes that thread to begin execution. In other words, the running behavior of the thread is triggered by the JVM,
 by internally calling the run() method of the thread.
 
+
 4)What would be the result if you call the run() method to execute 3 threads that have the following runnable behavior?
+------------------------------------------------------------------------------------------------------------------------
   public class MyThread extends Thread {
     @Override
     public void run() {
@@ -24,8 +31,9 @@ by internally calling the run() method of the thread.
 The threads would run one after the other, but not at the same time.
 They won't behave like threads, therefore, there will be no multithreading happening there.
 
-5)Given this code of the MyRunnable class, what code should you write to make this runnable behavior run in a separate thread?
 
+5)Given this code of the MyRunnable class, what code should you write to make this runnable behavior run in a separate thread?
+------------------------------------------------------------------------------------------------------------------------------
   public class MyRunnable implements Runnable {
     @Override
     public void run() {
@@ -37,12 +45,15 @@ They won't behave like threads, therefore, there will be no multithreading happe
 MyRunnable myRunnable = new MyRunnable();
 Thread thread = new Thread(myRunnable);
 
+
 6)What steps should you follow when using the implements Runnable way of creating a Java thread?
+------------------------------------------------------------------------------------------------
 When creating a thread like this, you should first define a class that implements the java.lang.Runnable interface.
 Then, you should create an object of the java.lang.Thread class, passing in an instance of your runnable class.
 
-7)This code was written to implement a thread that prints numbers from 1 to 5. What's the code that should be put inside this class?
 
+7)This code was written to implement a thread that prints numbers from 1 to 5. What's the code that should be put inside this class?
+------------------------------------------------------------------------------------------------------------------------------------
   public class FirstThread extends Thread {
     //...
    }
@@ -54,16 +65,29 @@ Then, you should create an object of the java.lang.Thread class, passing in an i
   }
 Override the public void run() method to print numbers from 1 to 5 in separate threads.
 
+
 8)The two ways of creating a thread are, _____ the _____class and _____ the _____interface.
+-------------------------------------------------------------------------------------------
 extending Thread; implementing Runnable
 There are two ways to create a Java thread. You can either extend the java.lang.Thread class, or you can implement the java.lang.Runnable interface.
 
+
 9)The two ways to create a thread are listed below. What's the difference between them?
+---------------------------------------------------------------------------------------
   Extend thejava.lang.Thread class.
   Implement thejava.lang.Runnable interface.
 The second way involves an additional step of instantiating the runnable class, before creating the thread instance.
 The first way simply involves overriding the run() method in the thread class to implement the running behavior of the thread.
 The second way involves having to instantiate the runnable class first, and then creating the thread instance, passing that runnable instance to its constructor.
 
+
+10)When to Use Daemon Threads?:
+-------------------------------
+ - Background Tasks: Use daemon threads for tasks that do not require user interaction and should not prevent the program from exiting.
+ - Examples include background monitoring tasks or performing cleanup processes.
+ - Resource Management: They're useful for tasks that manage resources during the runtime of an application without holding it open for completion.
+ - Important Points:
+ - Daemon threads have a lower priority compared to user threads; they do not prevent the Java Virtual Machine (JVM) from exiting.
+ - Ensure that daemon threads do not hold up critical resources, as they may terminate unexpectedly when the main thread finishes.
 
 

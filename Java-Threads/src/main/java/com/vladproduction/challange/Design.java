@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Design {
 
-    private int code;
-    private String name;
-    private List<Long> votes;
+    private final int code;
+    private final String name;
+    private final List<Long> votes;
 
     public Design(int code, String name) {
         this.code = code;

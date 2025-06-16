@@ -2,7 +2,7 @@ package com.vladproduction.challange;
 
 public class VotingRunnable implements Runnable {
 
-    private Design design;
+    private final Design design;
     protected boolean doStop = false;
 
     public VotingRunnable(Design design) {
@@ -14,11 +14,11 @@ public class VotingRunnable implements Runnable {
         while (!doStop) {
             System.out.println("Voting going on for design " + design.getName());
             design.getVotes().add(1L);
-            Double sleepFor = Math.random() * 1000;
+            double sleepFor = Math.random() * 1000;
             try {
-                Thread.sleep(sleepFor.longValue());
+                Thread.sleep((long) sleepFor);
             }catch (InterruptedException e){
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
