@@ -1,4 +1,4 @@
-# Java Threading & Multithreading Mastery
+# Threading-and-Multithreading
 
 A comprehensive collection of Java threading and multithreading concepts, implementations, and real-world projects demonstrating concurrent programming principles.
 
