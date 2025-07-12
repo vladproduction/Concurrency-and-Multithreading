@@ -45,7 +45,7 @@ This repository contains practical implementations of threading concepts in Java
 - Producer-Consumer pattern
 - Reader-Writer pattern
 - Thread-safe Singleton
-- Observer pattern with threading
+- Observer pattern with threading 
 
 ## 🛠 Prerequisites, Tools and Libraries Used
 
